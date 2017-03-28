@@ -94,12 +94,37 @@ static int cedar_match(lua_State *L)
     return 1;
 }
 
+static int cedar_erase(lua_State *L)
+{
+    int n = lua_gettop(L);
+    if (n < 2) {
+        return luaL_error(L, "no enough arguments.");
+    }
+
+    cedar::da <uint64_t> **trie = (cedar::da <uint64_t>**)
+        lua_touserdata(L, 1);
+
+    const char *key = luaL_checkstring(L, 2);
+    if (key == NULL) {
+        return luaL_error(L, "bad argument. <2>");
+    }
+
+    int ret = (*trie)->erase(key);
+
+    if (ret == 0) {
+        lua_pushboolean(L, 1);
+    } else {
+        lua_pushboolean(L, 0);
+    }
+    return 1;
+}
 
 
 static const struct luaL_Reg cedar_reg [] = {
     {"new", cedar_new},
     {"update", cedar_update},
     {"match", cedar_match},
+    {"erase", cedar_erase},
     {NULL, NULL}
 };
 
