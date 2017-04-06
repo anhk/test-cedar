@@ -9,7 +9,7 @@ cedar.so: cedar.cc
 	g++ -g -o $@ $^ ${INC} -fPIC -shared
 
 test: test.cc
-	g++ -g -o $@ $^ ${INC}
+	g++ -g -o $@ $^
 
 clean:
 	rm -fr cedar.so test
